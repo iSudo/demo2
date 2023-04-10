@@ -9,7 +9,7 @@ import kotlin.random.Random
 class DoctorsTests {
     @Test
     fun navLinksAreWorking() {
-        Selenide.open("http://localhost:4200/#/")
+        Selenide.open("http://localhost:4200/")
         Selenide.`$`(".home").shouldHave(Condition.text("Home"))
 
         val doctorsLink = Selenide.`$`(".doctors");
@@ -27,7 +27,7 @@ class DoctorsTests {
 
     @Test
     fun formIsWorking() {
-        Selenide.open("http://localhost:4200/#/doctors")
+        Selenide.open("http://localhost:4200/doctors")
 
         Selenide.`$`("#form").should(Condition.exist)
 
@@ -53,12 +53,12 @@ class DoctorsTests {
         row.find("button.mdi-delete").click()
 
         // assert
-//		assert(getTableRows().count() == count - 1)
+		assert(getTableRows().count() == count - 1)
     }
 
     @Test
     fun searchIsWorking() {
-        Selenide.open("http://localhost:4200/#/doctors")
+        Selenide.open("http://localhost:4200/doctors")
 
         val random = Random.nextInt(1000, 9999)
 
@@ -86,7 +86,7 @@ class DoctorsTests {
     @Test
     fun deleteIsWorking() {
         Selenide.open("http://localhost:4200")
-        Selenide.open("http://localhost:4200/#/doctors")
+        Selenide.open("http://localhost:4200/doctors")
 
         val random = Random.nextInt(1000, 9999)
 

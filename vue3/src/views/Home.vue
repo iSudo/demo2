@@ -24,11 +24,11 @@
   </div>
 </template>
 
-<script>
-import Vue from "vue";
+<script lang="ts">
+import { defineComponent } from 'vue'
 
-export default Vue.extend({
-  name: "Home",
+export default defineComponent({
+  name: "HomeView",
   components: {}
 });
 </script>

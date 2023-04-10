@@ -10,7 +10,7 @@ import org.openqa.selenium.Keys
 class MedicalTeamsTests {
 	@Test
 	fun editIsWorking() {
-		Selenide.open("http://localhost:4200/#/teams")
+		Selenide.open("http://localhost:4200/teams")
 
 		Selenide.`$`("#teams").should(Condition.exist)
 
@@ -69,7 +69,7 @@ class MedicalTeamsTests {
 		getLastCheckbox().shouldBe(Condition.checked)
 
 		// ensure doctors table updated
-		Selenide.open("http://localhost:4200/#/doctors")
+		Selenide.open("http://localhost:4200/doctors")
 		val rows = Selenide.`$$`("#doctors .doctors-table tbody tr")
 
 		rows.first().findAll("td")[4].shouldBe(Condition.matchText(lastTeamId))

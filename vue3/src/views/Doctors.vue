@@ -25,7 +25,7 @@
             :items="doctors"
             :search="search"
             class="elevation-1 doctors-table">
-          <template v-slot:item.actions="{ item }">
+          <template #item.actions="{ item }">
             <v-icon small @click="deleteDoctor(item)">
               mdi-delete
             </v-icon>
@@ -64,11 +64,11 @@
               </v-col>
 
               <v-col cols="12" md="4">
-                <v-date-picker
+                <VueDatePicker
                     v-model="birthDate"
-                    first-day-of-week="1"
-                    max="2004-01-01"
                     id="birth-date"
+                    inline
+                    auto-apply
                 />
               </v-col>
             </v-row>
@@ -93,9 +93,9 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {DataTableHeader} from "vuetify";
-import axios from "@/axios.ts";
+import { defineComponent } from 'vue'
+import { VDataTable } from 'vuetify/labs/VDataTable'
+import axiosInstance from "@/axios";
 
 export interface Doctor {
   id: number;
@@ -116,10 +116,12 @@ interface Data {
   doctors: Doctor[];
   doctorsResponse: Doctor[];
   search: string;
-  headers: DataTableHeader[];
+  headers: {}[];
 }
 
-export default Vue.extend({
+export default defineComponent({
+  name: "DoctorsView",
+  components: {VDataTable},
   data(): Data {
     return {
       valid: true,
@@ -169,7 +171,7 @@ export default Vue.extend({
   },
   methods: {
     async deleteDoctor(item: Doctor) {
-      await axios.post(`/doctors/remove?id=${item.id}`);
+      await axiosInstance.post(`/doctors/remove?id=${item.id}`);
       this.doctorsResponse = this.doctorsResponse.filter(
           d => d.id !== item.id
       );
@@ -181,7 +183,7 @@ export default Vue.extend({
         lastName: this.lastName,
         birthDate: this.birthDate
       };
-      const newDoctor = (await axios.post("/doctors/addOrUpdate", new URLSearchParams(doctor).toString())).data;
+      const newDoctor = (await axiosInstance.post("/doctors/addOrUpdate", new URLSearchParams(doctor).toString())).data;
       this.doctorsResponse.push(newDoctor);
       this.doctors = this.doctorsResponse;
 
@@ -192,7 +194,7 @@ export default Vue.extend({
     }
   },
   async created() {
-    this.doctorsResponse = (await axios.get("/doctors/list")).data;
+    this.doctorsResponse = (await axiosInstance.get("/doctors/list")).data;
     this.doctors = this.doctorsResponse;
   }
 });

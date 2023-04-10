@@ -20,7 +20,7 @@
           class="elevation-1"
           @click:row="onTeamClick"
       >
-        <template v-slot:item.actions="{ item }">
+        <template #:item.actions="{ item }">
           <v-icon small @click="onTeamClick(item)">
             mdi-pencil
           </v-icon>
@@ -30,7 +30,7 @@
 
     <div v-if="id">
       <p class="subtitle-2 text-center">
-        Choose {{ teams.find(t => t.id === id).name }} team doctors:
+        Choose {{ teams?.find(t => t.id === id)?.name }} team doctors:
       </p>
 
       <v-row justify="space-around">
@@ -51,10 +51,10 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
-import {DataTableHeader} from "vuetify";
-import axios from '@/axios';
-import {Doctor} from "@/views/Doctors.vue";
+import { defineComponent } from 'vue'
+import axiosInstance from '@/axios';
+import type { Doctor } from "./Doctors.vue";
+import type { AxiosResponse } from "axios";
 
 interface Team {
   id: number;
@@ -65,13 +65,14 @@ interface Data {
   id: number;
   search: string;
   checkedDoctors: number[];
-  headers: DataTableHeader[];
+  headers: {}[];
   doctors: Doctor[];
   teams: Team[];
   teamsResponse: Team[];
 }
 
-export default Vue.extend({
+export default defineComponent({
+  name: "MedicalTeamsView",
   data(): Data {
     return {
       id: 0,
@@ -113,10 +114,10 @@ export default Vue.extend({
       const doctor = this.doctors.find(d => d.id === docId) as Doctor;
       // backend API does not accept null, it needs empty string for some reason
       doctor.medicalTeamId = (this.checkedDoctors.includes(docId) ? this.id : "" as any);
-      axios.post(
+      axiosInstance.post(
           "/doctors/addOrUpdate",
           new URLSearchParams(doctor as any).toString()
-      ).then(response => {
+      ).then((response: AxiosResponse) => {
         this.doctors = this.doctors.map(d => {
           if (d.id !== docId) {
             return d;
@@ -132,11 +133,11 @@ export default Vue.extend({
     }
   },
   created() {
-    axios.get("/teams/list").then(response => {
+    axiosInstance.get("/teams/list").then(response => {
       this.teamsResponse = response.data;
       this.teams = this.teamsResponse;
     });
-    axios.get("/doctors/list").then(response => {
+    axiosInstance.get("/doctors/list").then(response => {
       this.doctors = response.data;
     });
   }
