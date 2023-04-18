@@ -94,10 +94,10 @@
 <script setup lang="ts">
 import { computed, reactive, ref, onMounted } from 'vue'
 import { VDataTable } from 'vuetify/labs/VDataTable'
-import axiosInstance from "@/axios";
-import type { Doctor } from "@/model/Doctor";
+import axiosInstance from "@/axios"
+import type { Doctor } from "@/model/Doctor"
 
-type RuleValidation = (v: string) => string | boolean;
+type RuleValidation = (v: string) => string | boolean
 
 interface Data {
   valid: boolean
@@ -105,8 +105,8 @@ interface Data {
   lastName: string
   birthDate: string
   nameRules: RuleValidation[]
-  doctors: Doctor[];
-  doctorsResponse: Doctor[];
+  doctors: Doctor[]
+  doctorsResponse: Doctor[]
   search: string
   headers: any[]
 }

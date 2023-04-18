@@ -131,7 +131,7 @@ class DoctorsTests {
         setInputValue("#first-name", firstName)
         setInputValue("#last-name", lastName)
 
-        Selenide.`$$`(".dp__month_year_select")[1].click()
+        Selenide.`$$`(".dp__month_year_select")[1].scrollIntoView(true).click()
         Selenide.`$`(".dp__overlay .dp__overlay_row .dp__overlay_cell").click()
         Selenide.`$$`(".dp__month_year_select")[0].click()
         Selenide.`$`(".dp__overlay .dp__overlay_row").`$$`(".dp__overlay_col")[1].click()

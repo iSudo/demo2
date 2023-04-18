@@ -15,7 +15,7 @@ class MedicalTeamsTests {
 		Selenide.`$`("#teams").should(Condition.exist)
 
 		// edit first team
-		getTableRows().first().find("button.mdi-pencil").click()
+		getTableRows().first().find(".mdi-pencil").click()
 
 		// check first and last checkboxes
 		if (!getFirstCheckbox().`is`(Condition.checked)) {
@@ -30,7 +30,7 @@ class MedicalTeamsTests {
 		Selenide.`$`("button").click()
 
 		// edit first team again
-		getTableRows().first().find("button.mdi-pencil").click()
+		getTableRows().first().find(".mdi-pencil").click()
 
 		// should be checked
 		getFirstCheckbox().shouldBe(Condition.checked)
@@ -40,7 +40,7 @@ class MedicalTeamsTests {
 		Selenide.`$`("button").click()
 
 		// edit last team
-		getTableRows().last().find("button.mdi-pencil").click()
+		getTableRows().last().find(".mdi-pencil").click()
 
 		// should not be checked
 		getFirstCheckbox().shouldNotBe(Condition.checked)
@@ -53,7 +53,7 @@ class MedicalTeamsTests {
 		Selenide.`$`("button").click()
 
 		// ensure first team unchecked
-		getTableRows().first().find("button.mdi-pencil").click()
+		getTableRows().first().find(".mdi-pencil").click()
 
 		getFirstCheckbox().shouldNotBe(Condition.checked)
 		getLastCheckbox().shouldNotBe(Condition.checked)
@@ -63,7 +63,7 @@ class MedicalTeamsTests {
 
 		// edit last team again
 		val lastTeamId = getTableRows().last().findAll("td").first().text()
-		getTableRows().last().find("button.mdi-pencil").click()
+		getTableRows().last().find(".mdi-pencil").click()
 
 		getFirstCheckbox().shouldBe(Condition.checked)
 		getLastCheckbox().shouldBe(Condition.checked)
