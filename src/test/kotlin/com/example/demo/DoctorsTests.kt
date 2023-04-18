@@ -50,7 +50,7 @@ class DoctorsTests {
         val count = getTableRows().count()
 
         // delete row
-        row.find("button.mdi-delete").click()
+        row.find(".mdi-delete").click()
 
         // assert
 		assert(getTableRows().count() == count - 1)
@@ -102,7 +102,7 @@ class DoctorsTests {
 
         val firstTableRow = getTableRows().first()
         // delete row
-        firstTableRow.find("button.mdi-delete").click()
+        firstTableRow.find(".mdi-delete").click()
 
         val firstRowTexts = firstTableRow.findAll("td").texts()
         firstRowTexts[1].contains(firstName2)
@@ -111,7 +111,7 @@ class DoctorsTests {
 
     private fun orderTableById(desc: Boolean = false) {
         // sorting
-        val ths = Selenide.`$$`("#doctors .doctors-table thead th.sortable")
+        val ths = Selenide.`$$`("#doctors .doctors-table thead .v-data-table__th--sortable")
         val idHeader = ths.first()
         val anyOtherHeader = ths.last()
 
@@ -131,10 +131,11 @@ class DoctorsTests {
         setInputValue("#first-name", firstName)
         setInputValue("#last-name", lastName)
 
-        Selenide.`$`(".v-date-picker-title__year").click()
-        Selenide.`$`(".v-date-picker-years li").click()
-        Selenide.`$`(".v-date-picker-table.v-date-picker-table--month button").click()
-        Selenide.`$`(".v-date-picker-table.v-date-picker-table--date button").click()
+        Selenide.`$$`(".dp__month_year_select")[1].click()
+        Selenide.`$`(".dp__overlay .dp__overlay_row .dp__overlay_cell").click()
+        Selenide.`$$`(".dp__month_year_select")[0].click()
+        Selenide.`$`(".dp__overlay .dp__overlay_row").`$$`(".dp__overlay_col")[1].click()
+        Selenide.`$`(".dp__calendar .dp__calendar_row").`$$`(".dp__calendar_item")[6].click()
 
         Selenide.`$`("#submit").should(Condition.enabled).click()
     }
