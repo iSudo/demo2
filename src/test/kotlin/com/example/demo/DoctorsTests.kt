@@ -3,6 +3,7 @@ package com.example.demo
 import com.codeborne.selenide.Condition
 import com.codeborne.selenide.ElementsCollection
 import com.codeborne.selenide.Selenide
+import com.codeborne.selenide.SelenideElement
 import org.junit.jupiter.api.Test
 import kotlin.random.Random
 
@@ -10,26 +11,26 @@ class DoctorsTests {
     @Test
     fun navLinksAreWorking() {
         Selenide.open("http://localhost:4200/")
-        Selenide.`$`(".home").shouldHave(Condition.text("Home"))
+        findOne(".home").shouldHave(Condition.text("Home"))
 
-        val doctorsLink = Selenide.`$`(".doctors");
-        val teamsLink = Selenide.`$`(".teams");
+        val doctorsLink = findOne(".doctors");
+        val teamsLink = findOne(".teams");
 
         doctorsLink.shouldHave(Condition.text("Doctors"))
         teamsLink.shouldHave(Condition.text("Medical teams"))
 
         doctorsLink.click()
-        Selenide.`$`("#doctors").should(Condition.exist)
+        findOne("#doctors").should(Condition.exist)
 
         teamsLink.click()
-        Selenide.`$`("#teams").should(Condition.exist)
+        findOne("#teams").should(Condition.exist)
     }
 
     @Test
     fun formIsWorking() {
         Selenide.open("http://localhost:4200/doctors")
 
-        Selenide.`$`("#form").should(Condition.exist)
+        findOne("#form").should(Condition.exist)
 
         val firstName = "Al"
         val lastName = "Boliit"
@@ -111,7 +112,7 @@ class DoctorsTests {
 
     private fun orderTableById(desc: Boolean = false) {
         // sorting
-        val ths = Selenide.`$$`("#doctors .doctors-table thead .v-data-table__th--sortable")
+        val ths = findAll("#doctors .doctors-table thead .v-data-table__th--sortable")
         val idHeader = ths.first()
         val anyOtherHeader = ths.last()
 
@@ -131,31 +132,31 @@ class DoctorsTests {
         setInputValue("#first-name", firstName)
         setInputValue("#last-name", lastName)
 
-        Selenide.`$$`(".dp__month_year_select")[1].scrollIntoView(true).click()
-        Selenide.`$`(".dp__overlay .dp__overlay_row .dp__overlay_cell").click()
-        Selenide.`$$`(".dp__month_year_select")[0].click()
-        Selenide.`$`(".dp__overlay .dp__overlay_row").`$$`(".dp__overlay_col")[1].click()
-        Selenide.`$`(".dp__calendar .dp__calendar_row").`$$`(".dp__calendar_item")[6].click()
+        findAll(".dp__month_year_select")[1].scrollIntoView(true).click()
+        findOne(".dp__overlay .dp__overlay_row .dp__overlay_cell").click()
+        findAll(".dp__month_year_select")[0].click()
+        findOne(".dp__overlay .dp__overlay_row").findAll(".dp__overlay_col")[1].click()
+        findOne(".dp__calendar .dp__calendar_row").findAll(".dp__calendar_item")[6].click()
 
-        Selenide.`$`("#submit").should(Condition.enabled).click()
+        findOne("#submit").should(Condition.enabled).click()
     }
 
     private fun setInputValue(selector: String, value: String = "") {
-        val el = Selenide.`$`(selector)
+        val el = findOne(selector)
 
-        // el.clear()
-        // el.setValue(value)
-        // for some reason commented out code above does not work :(
-
-        for (i in 1..value.length) {
-            el.sendKeys("\b")
-        }
-        if (value.isNotEmpty()) {
-            el.sendKeys(value)
-        }
+        el.clear()
+        el.value = value
     }
 
     private fun getTableRows(): ElementsCollection {
-        return Selenide.`$$`("#doctors .doctors-table tbody tr")
+        return findAll("#doctors .doctors-table tbody tr")
+    }
+
+    private fun findOne(selector: String): SelenideElement {
+        return Selenide.`$`(selector)
+    }
+
+    private fun findAll(selector: String): ElementsCollection {
+        return Selenide.`$$`(selector)
     }
 }

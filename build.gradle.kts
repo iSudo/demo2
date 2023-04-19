@@ -27,6 +27,7 @@ dependencies {
         exclude(group = "org.junit.vintage", module = "junit-vintage-engine")
     }
     testImplementation("com.codeborne:selenide:6.12.4")
+    testImplementation("com.codeborne:selenide-clear-with-shortcut:6.12.4")
     testImplementation("org.apache.httpcomponents.client5:httpclient5:5.2.1")
 }
 
