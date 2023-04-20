@@ -152,12 +152,16 @@ const props = reactive<Data>({
   ]
 })
 
+const pickerSelected = computed(() => !!props.birthDate)
+/*
+* doctors form ( #form )
+* */
+const form = ref(null)
+
 onMounted(async() => {
   props.doctorsResponse = (await axiosInstance.get("/doctors/list")).data;
   props.doctors = props.doctorsResponse;
 })
-
-const pickerSelected = computed(() => !!props.birthDate)
 
 const deleteDoctor = async(item: any) => {
   item = item.raw as Doctor
@@ -167,8 +171,6 @@ const deleteDoctor = async(item: any) => {
   );
   props.doctors = props.doctorsResponse;
 }
-
-const form = ref(null)
 
 const onCreateDoctor = async() => {
   const doctor = {

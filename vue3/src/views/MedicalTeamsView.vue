@@ -97,11 +97,11 @@ const props = reactive<Data>({
 })
 
 onMounted(async() => {
-  axiosInstance.get("/teams/list").then(response => {
+  axiosInstance.get("/teams/list").then((response: AxiosResponse<Team[]>) => {
     props.teamsResponse = response.data;
     props.teams = props.teamsResponse;
   });
-  axiosInstance.get("/doctors/list").then(response => {
+  axiosInstance.get("/doctors/list").then((response: AxiosResponse<Doctor[]>) => {
     props.doctors = response.data;
   });
 })
@@ -117,6 +117,7 @@ const onTeamClick = (item: any) => {
 const backToList = () => {
   props.id = 0;
 }
+
 const onDoctorChange = (docId: number) => {
   const doctor = props.doctors.find(d => d.id === docId) as Doctor;
   // backend API does not accept null, it needs empty string for some reason
@@ -124,7 +125,7 @@ const onDoctorChange = (docId: number) => {
   axiosInstance.post(
       "/doctors/addOrUpdate",
       new URLSearchParams(doctor as any).toString()
-  ).then(response => {
+  ).then((response: AxiosResponse<Doctor>) => {
     props.doctors = props.doctors.map(d => {
       if (d.id !== docId) {
         return d;
